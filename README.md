@@ -7,7 +7,7 @@
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>Basic V2|
 |**Service Type**<br>SAP System (ABAP On Premise)|
-|**Service URL**<br>http://cuvawss4h01.linkeit.local:50000/sap/opu/odata/sap/ZSENTIMENTAPP_ODATA_PROJECT_SRV|
+|**Service URL**<br>YOUR_SYSTEM_URL/sap/opu/odata/sap/ZSENTIMENTAPP_ODATA_PROJECT_SRV|
 |**Module Name**<br>ticketmind|
 |**Application Title**<br>TicketMind|
 |**Namespace**<br>|
