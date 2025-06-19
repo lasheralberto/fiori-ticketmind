@@ -1,0 +1,52 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+>
+    <Dialog
+        id="fileUploaderDialog"
+        title="Adjuntar Archivo TXT"
+        draggable="true"
+        resizable="true"
+        contentWidth="500px"
+        contentHeight="auto"
+        afterClose="onDialogClose"
+    >
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <u:FileUploader
+                    id="fileUploader"
+                    name="uploadTxtFile"
+                    fileType="txt"
+                    placeholder="Selecciona un archivo TXT"
+                    buttonText="Buscar TXT"
+                    sendXHR="true"
+                    uploadOnChange="false"
+                    buttonOnly="true"
+                    change="onFileChange"
+                    maximumFileSize="1" mimeType="text/plain"
+                />
+                <TextArea
+                    id="txtContentDisplay"
+                    value=""
+                    editable="false"
+                    rows="10"
+                    width="100%"
+                    class="sapUiSmallMarginTop"
+                    placeholder="Contenido del TXT recibido"
+                />
+            </VBox>
+        </content>
+        <buttons>
+            <Button
+                text="Subir TXT a OData"
+                press="onUploadPress"
+                type="Emphasized"
+            />
+            <Button
+                text="Cancelar"
+                press="onCancelUploadPress"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,221 @@
+<mvc:View
+    controllerName="ticketmind.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:grid="sap.ui.layout.grid"
+    xmlns:core="sap.ui.core"
+    displayBlock="true"
+>
+    <Page
+        id="mainPage"
+        backgroundDesign="Transparent"
+        class="sapUiResponsiveContentPadding"
+    >
+        <content>
+            <f:DynamicPage
+                toggleHeaderOnTitleClick="true"
+                headerExpanded="false"
+            >
+                <f:content>
+                    <VBox class="sapUiSmallMargin">
+                        <!-- Input Section -->
+                        <!-- <Title text="Filtrar por equipo" level="H4" class="sapUiTinyMarginBottom"/> -->
+                                                <!-- Filter Section -->
+                        <HBox
+                            id="teamFilterBox"
+                            class="sapUiTinyMarginBottom"
+                            alignItems="Center"
+                            wrap="Wrap"
+                            
+                        >
+                            <!-- Los botones se generarán dinámicamente desde el controlador -->
+                        </HBox>
+                        <VBox
+                            class="sapUiNoContentPadding fullWidth"
+                            width="100%"
+                        >
+                            <Panel
+                                class="sapUiTinyMargin mesomorphicPanel fullWidth"
+                                width="100%"
+                            >
+                                <VBox
+                                    class="fullWidth"
+                                    width="100%"
+                                    alignItems="Stretch"
+                                >
+                                    <TextArea
+                                        value="{mainModel>/newPrediction/inputText}"
+                                        rows="3"
+                                        class="mesomorphicInput fullWidth"
+                                        width="100%"
+                                        placeholder="Enter feedback text to analyze..."
+                                        maxLength="5000"
+                                    />
+                                    <HBox
+                                        width="100%"
+                                        justifyContent="SpaceBetween"
+                                        alignItems="Center"
+                                        class="sapUiTinyMarginTop"
+                                    >
+                                        <Text
+                                            text="{
+                                                path: 'mainModel>/newPrediction/inputText',
+                                                formatter: '.formatCharacterCount'
+                                            }"
+                                            class="characterCount"
+                                        />
+                                        <Button
+                                            text="Analyze"
+                                            type="Emphasized"
+                                            press=".onAnalyzeFeedback"
+                                            enabled="true"
+                                            icon="sap-icon://journey-arrive"
+                                            class="mesomorphicButton"
+                                        />
+                                    </HBox>
+                                </VBox>
+                            </Panel>
+                        </VBox>
+
+
+
+                        <!-- Results Section -->
+                        <f:Card>
+                            <!-- <f:header>
+                                <card:Header title="Recent Predictions" />
+                            </f:header> -->
+                            <f:content>
+                                <Table
+                                    items="{/FeedbackPredictions}"
+                                    noDataText="No predictions yet"
+                                    fixedLayout="false"
+                                    width="100%"
+                                    id="predictionsTable"
+                                >
+                                    <dependents>
+                                        <ScrollContainer
+                                            horizontal="true"
+                                            vertical="false"
+                                            height="100%"
+                                            width="100%"
+                                        />
+                                    </dependents>
+                                    <columns>
+                                        <!-- <Column minScreenWidth="Desktop" width="15rem"><Text text="ID"/></Column> -->
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="30rem"
+                                        >
+                                            <Text text="Input Text" />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="15rem"
+                                        >
+                                            <Text text="User" />
+                                        </Column>
+                                        <!-- <Column minScreenWidth="Desktop" width="15rem"><Text text="Status"/></Column> -->
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="15rem"
+                                        >
+                                            <Text text="Sent." />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="15rem"
+                                        >
+                                            <Text text="Prior." />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="15rem"
+                                        >
+                                            <Text text="Cat." />
+                                        </Column>
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="15rem"
+                                        >
+                                            <Text text="Team" />
+                                        </Column>
+                                        <!-- <Column minScreenWidth="Desktop" width="10rem"><Text text="Ver."/></Column> -->
+                                        <Column
+                                            minScreenWidth="Desktop"
+                                            width="10rem"
+                                        >
+                                            <Text text="Time" />
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            type="Active"
+                                            press=".onRowPress"
+                                        >
+                                            <cells>
+                                                <!-- <Text text="{PredictionId}" tooltip="{PredictionId}"/> -->
+                                                <Text
+                                                    text="{path:'InputText', formatter:'.formatTextPreview'}"
+                                                    maxLines="3"
+                                                    class="sapUiTinyMarginBeginEnd"
+                                                />
+                                                <Text
+                                                    text="{CreatedBy}"
+                                                    tooltip="{CreatedBy}"
+                                                />
+                                                <!-- <ObjectStatus
+                                                    text="{ProcessingStatus}"
+                                                    state="{= ${ProcessingStatus} === 'COMPLETED' ? 'Success' : ${ProcessingStatus} === 'ERROR' ? 'Error' : 'Warning'}"
+                                                    tooltip="{ProcessingStatus}"
+                                                /> -->
+                                                <ObjectStatus
+                                                    text="{path: 'SentimentClass', formatter: '.mapSentimentLevel'}"
+                                                    state="{= ${SentimentClass} === 'Satisfecho' ? 'Success' : ${SentimentClass} === 'Muy insatisfecho' ? 'Error' : 'None'}"
+                                                    tooltip="{SentimentClass}"
+                                                />
+                                                <ObjectStatus
+                                                    text="{PriorityClass}"
+                                                    state="{= ${PriorityClass} === 'HIGH' ? 'Error' : ${PriorityClass} === 'MEDIUM' ? 'Warning' : 'Success'}"
+                                                    tooltip="{PriorityClass}"
+                                                />
+                                                <ObjectStatus
+                                                    text="{CategoryClass}"
+                                                    state="Information"
+                                                    tooltip="{CategoryClass}"
+                                                />
+                                                <ObjectStatus
+                                                    text="{path: 'TeamClass', formatter: '.formatter.formatTeamClass'}"
+                                                    state="Information"
+                                                />
+                                                <!-- <Text text="{ModelVersion}" tooltip="{ModelVersion}"/> -->
+                                                <Text
+                                                    text="{path: 'CreatedAt', formatter: '.formatter.formatDateTime'}"
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </f:content>
+                        </f:Card>
+                    </VBox>
+                </f:content>
+            </f:DynamicPage>
+        </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://education"
+                    text="Train Model"
+                    type="Emphasized"
+                    press="._openFileUploaderDialog"
+                    enabled="{= !${mainModel>/training/isProcessing}}"
+                    class="sapUiShadowedButton"
+                />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

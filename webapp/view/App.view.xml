@@ -1,0 +1,13 @@
+<mvc:View
+    controllerName="ticketmind.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <Shell
+        id="shell"
+        appWidthLimited="false"
+    >
+        <App id="app" />
+    </Shell>
+</mvc:View>

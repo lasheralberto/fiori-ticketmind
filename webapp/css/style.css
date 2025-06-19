@@ -1,0 +1,119 @@
+/* Mesomorphic Styles */
+.mesomorphicInput {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.mesomorphicInput:focus {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-2px);
+}
+
+.mesomorphicButton {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease !important;
+}
+
+.mesomorphicButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.mesomorphicPanel {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+    backdrop-filter: blur(10px);
+}
+
+.mesomorphicPanel .sapMPanelContent {
+    padding: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mesomorphicTable {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+.characterCount {
+    color: #666 !important;
+    font-size: 0.875rem;
+}
+
+.sentimentStatus {
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+}
+
+.sapUiShadowedButton {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.sapUiShadowedButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.sapFCard {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.sapFCard:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+
+.sapMListItem {
+    transition: all 0.2s ease-in-out;
+}
+
+.sapMListItem:hover {
+    transform: scale(1.01);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.fullWidth {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.mesomorphicInput.fullWidth {
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0.5rem !important;
+}
+
+.sapMVBox.fullWidth {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.teamFilterButton {
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 1px solid #b6bbc7;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 1.5px 0 #fff inset;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.teamFilterButton:hover, .teamFilterButton:active, .teamFilterButton.sapMBtnActive {
+    background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+    box-shadow: 0 4px 16px rgba(44,62,80,0.15), 0 1.5px 0 #fff inset;
+    color: #1a202c;
+    transform: translateY(-2px) scale(1.03);
+}

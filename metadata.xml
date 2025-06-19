@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="com.company.feedback.model" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      
+      <!-- ========================================= -->
+      <!-- ENTIDAD PRINCIPAL: FeedbackPrediction    -->
+      <!-- ========================================= -->
+      <EntityType Name="FeedbackPrediction">
+        <Key>
+          <PropertyRef Name="PredictionId"/>
+        </Key>
+        <Property Name="PredictionId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="InputText" Type="Edm.String" Nullable="false" MaxLength="5000"/>
+        <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="CreatedBy" Type="Edm.String" Nullable="true" MaxLength="100"/>
+        <Property Name="ProcessingStatus" Type="Edm.String" Nullable="false" MaxLength="20"/>
+        <Property Name="ErrorMessage" Type="Edm.String" Nullable="true" MaxLength="1000"/>
+        
+        <!-- Resultados de Predicción -->
+        <Property Name="SentimentClass" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="SentimentConfidence" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="PriorityClass" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="PriorityConfidence" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="CategoryClass" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="CategoryConfidence" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="TeamClass" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="TeamConfidence" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <!-- Metadatos -->
+        <Property Name="ModelVersion" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="ProcessingTimeMs" Type="Edm.Int32" Nullable="true"/>
+        
+        <!-- Navegación a historial -->
+        <NavigationProperty Name="PredictionHistory" 
+                           Relationship="com.company.feedback.model.PredictionToHistory" 
+                           FromRole="Prediction" ToRole="History"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: TrainingDataset                 -->
+      <!-- ========================================= -->
+      <EntityType Name="TrainingDataset">
+        <Key>
+          <PropertyRef Name="DatasetId"/>
+        </Key>
+        <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="DatasetName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="500"/>
+        <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="DatasetType" Type="Edm.String" Nullable="false" MaxLength="20"/>
+        <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="20"/>
+        <Property Name="RecordCount" Type="Edm.Int32" Nullable="true"/>
+        <Property Name="FileSize" Type="Edm.Int64" Nullable="true"/>
+        <Property Name="ValidationStatus" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="ValidationErrors" Type="Edm.String" Nullable="true" MaxLength="2000"/>
+        
+        <!-- Navegación a registros de entrenamiento -->
+        <NavigationProperty Name="TrainingRecords" 
+                           Relationship="com.company.feedback.model.DatasetToRecords" 
+                           FromRole="Dataset" ToRole="Records"/>
+        
+        <!-- Navegación a entrenamientos -->
+        <NavigationProperty Name="ModelTrainings" 
+                           Relationship="com.company.feedback.model.DatasetToTraining" 
+                           FromRole="Dataset" ToRole="Training"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: TrainingRecord                  -->
+      <!-- ========================================= -->
+      <EntityType Name="TrainingRecord">
+        <Key>
+          <PropertyRef Name="RecordId"/>
+        </Key>
+        <Property Name="RecordId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="Feedback" Type="Edm.String" Nullable="false" MaxLength="5000"/>
+        <Property Name="SentimentScore" Type="Edm.String" Nullable="false" MaxLength="50"/>
+        <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="50"/>
+        <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50"/>
+        <Property Name="TeamAssigned" Type="Edm.String" Nullable="false" MaxLength="50"/>
+        <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="IsValidated" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="ValidationNotes" Type="Edm.String" Nullable="true" MaxLength="500"/>
+        
+        <!-- Navegación al dataset padre -->
+        <NavigationProperty Name="Dataset" 
+                           Relationship="com.company.feedback.model.DatasetToRecords" 
+                           FromRole="Records" ToRole="Dataset"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: ModelTraining                   -->
+      <!-- ========================================= -->
+      <EntityType Name="ModelTraining">
+        <Key>
+          <PropertyRef Name="TrainingId"/>
+        </Key>
+        <Property Name="TrainingId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="TrainingName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="StartedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="CompletedAt" Type="Edm.DateTime" Nullable="true"/>
+        <Property Name="StartedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="20"/>
+        <Property Name="ErrorMessage" Type="Edm.String" Nullable="true" MaxLength="2000"/>
+        
+        <!-- Parámetros de entrenamiento -->
+        <Property Name="Epochs" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="BatchSize" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="LearningRate" Type="Edm.Decimal" Nullable="true" Precision="10" Scale="8"/>
+        <Property Name="ModelVersion" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        
+        <!-- Resultados del entrenamiento -->
+        <Property Name="TrainingLoss" Type="Edm.Decimal" Nullable="true" Precision="10" Scale="6"/>
+        <Property Name="TrainingAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="ValidationLoss" Type="Edm.Decimal" Nullable="true" Precision="10" Scale="6"/>
+        <Property Name="ValidationAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="TrainingDurationMs" Type="Edm.Int64" Nullable="true"/>
+        <Property Name="RecordsProcessed" Type="Edm.Int32" Nullable="true"/>
+        
+        <!-- Navegación -->
+        <NavigationProperty Name="Dataset" 
+                           Relationship="com.company.feedback.model.DatasetToTraining" 
+                           FromRole="Training" ToRole="Dataset"/>
+        <NavigationProperty Name="EvaluationResults" 
+                           Relationship="com.company.feedback.model.TrainingToEvaluation" 
+                           FromRole="Training" ToRole="Evaluation"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: ModelEvaluation                 -->
+      <!-- ========================================= -->
+      <EntityType Name="ModelEvaluation">
+        <Key>
+          <PropertyRef Name="EvaluationId"/>
+        </Key>
+        <Property Name="EvaluationId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="TrainingId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="EvaluatedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="EvaluatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="TestSamplesCount" Type="Edm.Int32" Nullable="false"/>
+        
+        <!-- Métricas por tarea -->
+        <Property Name="SentimentAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="SentimentF1Score" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="SentimentRelevanceLevel" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="SentimentRelevanceScore" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="PriorityAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="PriorityF1Score" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="PriorityRelevanceLevel" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="PriorityRelevanceScore" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="CategoryAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="CategoryF1Score" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="CategoryRelevanceLevel" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="CategoryRelevanceScore" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <Property Name="TeamAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="TeamF1Score" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="TeamRelevanceLevel" Type="Edm.String" Nullable="true" MaxLength="20"/>
+        <Property Name="TeamRelevanceScore" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        
+        <!-- Métricas generales -->
+        <Property Name="OverallAccuracy" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="OverallF1Score" Type="Edm.Decimal" Nullable="true" Precision="5" Scale="4"/>
+        <Property Name="BestTask" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="WorstTask" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="EvaluationSummary" Type="Edm.String" Nullable="true" MaxLength="2000"/>
+        
+        <!-- Navegación -->
+        <NavigationProperty Name="Training" 
+                           Relationship="com.company.feedback.model.TrainingToEvaluation" 
+                           FromRole="Evaluation" ToRole="Training"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: PredictionHistory               -->
+      <!-- ========================================= -->
+      <EntityType Name="PredictionHistory">
+        <Key>
+          <PropertyRef Name="HistoryId"/>
+        </Key>
+        <Property Name="HistoryId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="PredictionId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="SessionId" Type="Edm.String" Nullable="true" MaxLength="36"/>
+        <Property Name="AccessedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="UserFeedback" Type="Edm.String" Nullable="true" MaxLength="500"/>
+        <Property Name="WasAccurate" Type="Edm.Boolean" Nullable="true"/>
+        <Property Name="CorrectedSentiment" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="CorrectedPriority" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="CorrectedCategory" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        <Property Name="CorrectedTeam" Type="Edm.String" Nullable="true" MaxLength="50"/>
+        
+        <!-- Navegación -->
+        <NavigationProperty Name="Prediction" 
+                           Relationship="com.company.feedback.model.PredictionToHistory" 
+                           FromRole="History" ToRole="Prediction"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ENTIDAD: ModelConfiguration              -->
+      <!-- ========================================= -->
+      <EntityType Name="ModelConfiguration">
+        <Key>
+          <PropertyRef Name="ConfigId"/>
+        </Key>
+        <Property Name="ConfigId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+        <Property Name="IsActive" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="ModelVersion" Type="Edm.String" Nullable="false" MaxLength="20"/>
+        <Property Name="BackendEndpoint" Type="Edm.String" Nullable="false" MaxLength="200"/>
+        <Property Name="ApiKey" Type="Edm.String" Nullable="true" MaxLength="100"/>
+        <Property Name="TimeoutMs" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="MaxRetries" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false"/>
+        <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+        <Property Name="LastUpdatedAt" Type="Edm.DateTime" Nullable="true"/>
+        <Property Name="LastUpdatedBy" Type="Edm.String" Nullable="true" MaxLength="100"/>
+        
+        <!-- Configuraciones específicas -->
+        <Property Name="DefaultEpochs" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="DefaultBatchSize" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="MaxInputLength" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="EnableLogging" Type="Edm.Boolean" Nullable="false"/>
+        <Property Name="EnableCaching" Type="Edm.Boolean" Nullable="false"/>
+      </EntityType>
+
+      <!-- ========================================= -->
+      <!-- ASOCIACIONES/RELACIONES                  -->
+      <!-- ========================================= -->
+      
+      <Association Name="DatasetToRecords">
+        <End Type="com.company.feedback.model.TrainingDataset" Multiplicity="1" Role="Dataset"/>
+        <End Type="com.company.feedback.model.TrainingRecord" Multiplicity="*" Role="Records"/>
+        <ReferentialConstraint>
+          <Principal Role="Dataset">
+            <PropertyRef Name="DatasetId"/>
+          </Principal>
+          <Dependent Role="Records">
+            <PropertyRef Name="DatasetId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+
+      <Association Name="DatasetToTraining">
+        <End Type="com.company.feedback.model.TrainingDataset" Multiplicity="1" Role="Dataset"/>
+        <End Type="com.company.feedback.model.ModelTraining" Multiplicity="*" Role="Training"/>
+        <ReferentialConstraint>
+          <Principal Role="Dataset">
+            <PropertyRef Name="DatasetId"/>
+          </Principal>
+          <Dependent Role="Training">
+            <PropertyRef Name="DatasetId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+
+      <Association Name="TrainingToEvaluation">
+        <End Type="com.company.feedback.model.ModelTraining" Multiplicity="1" Role="Training"/>
+        <End Type="com.company.feedback.model.ModelEvaluation" Multiplicity="*" Role="Evaluation"/>
+        <ReferentialConstraint>
+          <Principal Role="Training">
+            <PropertyRef Name="TrainingId"/>
+          </Principal>
+          <Dependent Role="Evaluation">
+            <PropertyRef Name="TrainingId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+
+      <Association Name="PredictionToHistory">
+        <End Type="com.company.feedback.model.FeedbackPrediction" Multiplicity="1" Role="Prediction"/>
+        <End Type="com.company.feedback.model.PredictionHistory" Multiplicity="*" Role="History"/>
+        <ReferentialConstraint>
+          <Principal Role="Prediction">
+            <PropertyRef Name="PredictionId"/>
+          </Principal>
+          <Dependent Role="History">
+            <PropertyRef Name="PredictionId"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+
+      <!-- ========================================= -->
+      <!-- ENTITY SETS                              -->
+      <!-- ========================================= -->
+      
+      <EntityContainer Name="FeedbackModelContainer" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="FeedbackPredictions" EntityType="com.company.feedback.model.FeedbackPrediction"/>
+        <EntitySet Name="TrainingDatasets" EntityType="com.company.feedback.model.TrainingDataset"/>
+        <EntitySet Name="TrainingRecords" EntityType="com.company.feedback.model.TrainingRecord"/>
+        <EntitySet Name="ModelTrainings" EntityType="com.company.feedback.model.ModelTraining"/>
+        <EntitySet Name="ModelEvaluations" EntityType="com.company.feedback.model.ModelEvaluation"/>
+        <EntitySet Name="PredictionHistory" EntityType="com.company.feedback.model.PredictionHistory"/>
+        <EntitySet Name="ModelConfigurations" EntityType="com.company.feedback.model.ModelConfiguration"/>
+        
+        <AssociationSet Name="DatasetToRecordsSet" Association="com.company.feedback.model.DatasetToRecords">
+          <End EntitySet="TrainingDatasets" Role="Dataset"/>
+          <End EntitySet="TrainingRecords" Role="Records"/>
+        </AssociationSet>
+        
+        <AssociationSet Name="DatasetToTrainingSet" Association="com.company.feedback.model.DatasetToTraining">
+          <End EntitySet="TrainingDatasets" Role="Dataset"/>
+          <End EntitySet="ModelTrainings" Role="Training"/>
+        </AssociationSet>
+        
+        <AssociationSet Name="TrainingToEvaluationSet" Association="com.company.feedback.model.TrainingToEvaluation">
+          <End EntitySet="ModelTrainings" Role="Training"/>
+          <End EntitySet="ModelEvaluations" Role="Evaluation"/>
+        </AssociationSet>
+        
+        <AssociationSet Name="PredictionToHistorySet" Association="com.company.feedback.model.PredictionToHistory">
+          <End EntitySet="FeedbackPredictions" Role="Prediction"/>
+          <End EntitySet="PredictionHistory" Role="History"/>
+        </AssociationSet>
+      </EntityContainer>
+      
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

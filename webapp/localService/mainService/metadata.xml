@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="com.company.feedback.model" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="FeedbackPrediction" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="PredictionId"/>
+                </Key>
+                <Property Name="PredictionId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="InputText" Type="Edm.String" Nullable="false" MaxLength="1300"/>
+                <Property Name="CreatedAt" Type="Edm.String" Nullable="false"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="ProcessingStatus" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ErrorMessage" Type="Edm.String" Nullable="false" MaxLength="1000"/>
+                <Property Name="SentimentClass" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="SentimentConfidence" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="PriorityClass" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="PriorityConfidence" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="CategoryClass" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CategoryConfidence" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="TeamClass" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="TeamConfidence" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="ModelVersion" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ProcessingTimeMs" Type="Edm.Int32" Nullable="false"/>
+                <NavigationProperty Name="PredictionHistory" Relationship="com.company.feedback.model.PredictionToHistory" FromRole="FromRole_PredictionToHistory" ToRole="ToRole_PredictionToHistory"/>
+            </EntityType>
+            <EntityType Name="TrainingDataset" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DatasetId"/>
+                </Key>
+                <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="DatasetName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="500"/>
+                <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="DatasetType" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="RecordCount" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="FileSize" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="ValidationStatus" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ValidationErrors" Type="Edm.String" Nullable="false" MaxLength="2000"/>
+                <NavigationProperty Name="ModelTrainings" Relationship="com.company.feedback.model.DatasetToTraining" FromRole="FromRole_DatasetToTraining" ToRole="ToRole_DatasetToTraining"/>
+                <NavigationProperty Name="TrainingRecords" Relationship="com.company.feedback.model.DatasetToRecords" FromRole="FromRole_DatasetToRecords" ToRole="ToRole_DatasetToRecords"/>
+            </EntityType>
+            <EntityType Name="TrainingRecord" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="RecordId"/>
+                </Key>
+                <Property Name="RecordId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="Feedback" Type="Edm.String" Nullable="false" MaxLength="5000"/>
+                <Property Name="SentimentScore" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Priority" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="TeamAssigned" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="IsValidated" Type="Edm.Boolean" Nullable="false" sap:label="Indicator"/>
+                <Property Name="ValidationNotes" Type="Edm.String" Nullable="false" MaxLength="500"/>
+                <NavigationProperty Name="Dataset" Relationship="com.company.feedback.model.DatasetToRecords" FromRole="ToRole_DatasetToRecords" ToRole="FromRole_DatasetToRecords"/>
+            </EntityType>
+            <EntityType Name="ModelTraining" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="TrainingId"/>
+                </Key>
+                <Property Name="TrainingId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="DatasetId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="TrainingName" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="StartedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="CompletedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="StartedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ErrorMessage" Type="Edm.String" Nullable="false" MaxLength="2000"/>
+                <Property Name="Epochs" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="BatchSize" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="LearningRate" Type="Edm.Decimal" Nullable="false" Precision="10" Scale="8"/>
+                <Property Name="ModelVersion" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="TrainingLoss" Type="Edm.Decimal" Nullable="false" Precision="10" Scale="6"/>
+                <Property Name="TrainingAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="ValidationLoss" Type="Edm.Decimal" Nullable="false" Precision="10" Scale="6"/>
+                <Property Name="ValidationAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="TrainingDurationMs" Type="Edm.Int64" Nullable="false"/>
+                <Property Name="RecordsProcessed" Type="Edm.Int32" Nullable="false"/>
+                <NavigationProperty Name="EvaluationResults" Relationship="com.company.feedback.model.TrainingToEvaluation" FromRole="FromRole_TrainingToEvaluation" ToRole="ToRole_TrainingToEvaluation"/>
+                <NavigationProperty Name="Dataset" Relationship="com.company.feedback.model.DatasetToTraining" FromRole="ToRole_DatasetToTraining" ToRole="FromRole_DatasetToTraining"/>
+            </EntityType>
+            <EntityType Name="ModelEvaluation" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="EvaluationId"/>
+                </Key>
+                <Property Name="EvaluationId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="TrainingId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="EvaluatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="EvaluatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="TestSamplesCount" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="SentimentAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="SentimentF1Score" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="SentimentRelevanceLevel" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="SentimentRelevanceScore" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="PriorityAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="PriorityF1Score" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="PriorityRelevanceLevel" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="PriorityRelevanceScore" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="CategoryAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="CategoryF1Score" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="CategoryRelevanceLevel" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="CategoryRelevanceScore" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="TeamAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="TeamF1Score" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="TeamRelevanceLevel" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="TeamRelevanceScore" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="OverallAccuracy" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="OverallF1Score" Type="Edm.Decimal" Nullable="false" Precision="5" Scale="4"/>
+                <Property Name="BestTask" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="WorstTask" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="EvaluationSummary" Type="Edm.String" Nullable="false" MaxLength="2000"/>
+                <NavigationProperty Name="Training" Relationship="com.company.feedback.model.TrainingToEvaluation" FromRole="ToRole_TrainingToEvaluation" ToRole="FromRole_TrainingToEvaluation"/>
+            </EntityType>
+            <EntityType Name="PredictionHistory" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="HistoryId"/>
+                </Key>
+                <Property Name="HistoryId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="PredictionId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="SessionId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="AccessedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="UserFeedback" Type="Edm.String" Nullable="false" MaxLength="500"/>
+                <Property Name="WasAccurate" Type="Edm.Boolean" Nullable="false" sap:label="Indicator"/>
+                <Property Name="CorrectedSentiment" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CorrectedPriority" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CorrectedCategory" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <Property Name="CorrectedTeam" Type="Edm.String" Nullable="false" MaxLength="50"/>
+                <NavigationProperty Name="Prediction" Relationship="com.company.feedback.model.PredictionToHistory" FromRole="ToRole_PredictionToHistory" ToRole="FromRole_PredictionToHistory"/>
+            </EntityType>
+            <EntityType Name="ModelConfiguration" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="ConfigId"/>
+                </Key>
+                <Property Name="ConfigId" Type="Edm.String" Nullable="false" MaxLength="36"/>
+                <Property Name="IsActive" Type="Edm.Boolean" Nullable="false" sap:label="Indicator"/>
+                <Property Name="ModelVersion" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="BackendEndpoint" Type="Edm.String" Nullable="false" MaxLength="200"/>
+                <Property Name="ApiKey" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="TimeoutMs" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="MaxRetries" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CreatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="CreatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="LastUpdatedAt" Type="Edm.DateTime" Nullable="false" Precision="0" sap:label="Time Stamp"/>
+                <Property Name="LastUpdatedBy" Type="Edm.String" Nullable="false" MaxLength="100"/>
+                <Property Name="DefaultEpochs" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="DefaultBatchSize" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="MaxInputLength" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="EnableLogging" Type="Edm.Boolean" Nullable="false" sap:label="Indicator"/>
+                <Property Name="EnableCaching" Type="Edm.Boolean" Nullable="false" sap:label="Indicator"/>
+            </EntityType>
+            <Association Name="PredictionToHistory" sap:content-version="1">
+                <End Type="com.company.feedback.model.FeedbackPrediction" Multiplicity="1" Role="FromRole_PredictionToHistory"/>
+                <End Type="com.company.feedback.model.PredictionHistory" Multiplicity="*" Role="ToRole_PredictionToHistory"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_PredictionToHistory">
+                        <PropertyRef Name="PredictionId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_PredictionToHistory">
+                        <PropertyRef Name="PredictionId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DatasetToTraining" sap:content-version="1">
+                <End Type="com.company.feedback.model.TrainingDataset" Multiplicity="1" Role="FromRole_DatasetToTraining"/>
+                <End Type="com.company.feedback.model.ModelTraining" Multiplicity="*" Role="ToRole_DatasetToTraining"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DatasetToTraining">
+                        <PropertyRef Name="DatasetId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DatasetToTraining">
+                        <PropertyRef Name="DatasetId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="DatasetToRecords" sap:content-version="1">
+                <End Type="com.company.feedback.model.TrainingDataset" Multiplicity="1" Role="FromRole_DatasetToRecords"/>
+                <End Type="com.company.feedback.model.TrainingRecord" Multiplicity="*" Role="ToRole_DatasetToRecords"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_DatasetToRecords">
+                        <PropertyRef Name="DatasetId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_DatasetToRecords">
+                        <PropertyRef Name="DatasetId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="TrainingToEvaluation" sap:content-version="1">
+                <End Type="com.company.feedback.model.ModelTraining" Multiplicity="1" Role="FromRole_TrainingToEvaluation"/>
+                <End Type="com.company.feedback.model.ModelEvaluation" Multiplicity="*" Role="ToRole_TrainingToEvaluation"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_TrainingToEvaluation">
+                        <PropertyRef Name="TrainingId"/>
+                    </Principal>
+                    <Dependent Role="ToRole_TrainingToEvaluation">
+                        <PropertyRef Name="TrainingId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="com_company_feedback_model_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="FeedbackPredictions" EntityType="com.company.feedback.model.FeedbackPrediction" sap:content-version="1"/>
+                <EntitySet Name="TrainingDatasets" EntityType="com.company.feedback.model.TrainingDataset" sap:content-version="1"/>
+                <EntitySet Name="TrainingRecords" EntityType="com.company.feedback.model.TrainingRecord" sap:content-version="1"/>
+                <EntitySet Name="ModelTrainings" EntityType="com.company.feedback.model.ModelTraining" sap:content-version="1"/>
+                <EntitySet Name="ModelEvaluations" EntityType="com.company.feedback.model.ModelEvaluation" sap:content-version="1"/>
+                <EntitySet Name="PredictionHistory" EntityType="com.company.feedback.model.PredictionHistory" sap:content-version="1"/>
+                <EntitySet Name="ModelConfigurations" EntityType="com.company.feedback.model.ModelConfiguration" sap:content-version="1"/>
+                <AssociationSet Name="DatasetToRecordsSet" Association="com.company.feedback.model.DatasetToRecords" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="TrainingDatasets" Role="FromRole_DatasetToRecords"/>
+                    <End EntitySet="TrainingRecords" Role="ToRole_DatasetToRecords"/>
+                </AssociationSet>
+                <AssociationSet Name="DatasetToTrainingSet" Association="com.company.feedback.model.DatasetToTraining" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="TrainingDatasets" Role="FromRole_DatasetToTraining"/>
+                    <End EntitySet="ModelTrainings" Role="ToRole_DatasetToTraining"/>
+                </AssociationSet>
+                <AssociationSet Name="TrainingToEvaluationSet" Association="com.company.feedback.model.TrainingToEvaluation" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ModelTrainings" Role="FromRole_TrainingToEvaluation"/>
+                    <End EntitySet="ModelEvaluations" Role="ToRole_TrainingToEvaluation"/>
+                </AssociationSet>
+                <AssociationSet Name="PredictionToHistorySet" Association="com.company.feedback.model.PredictionToHistory" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="FeedbackPredictions" Role="FromRole_PredictionToHistory"/>
+                    <End EntitySet="PredictionHistory" Role="ToRole_PredictionToHistory"/>
+                </AssociationSet>
+            </EntityContainer>
+            <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <atom:link rel="self" href="http://cuvawss4h01.linkeit.local:50000/sap/opu/odata/sap/ZSENTIMENTAPP_ODATA_PROJECT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://cuvawss4h01.linkeit.local:50000/sap/opu/odata/sap/ZSENTIMENTAPP_ODATA_PROJECT_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
